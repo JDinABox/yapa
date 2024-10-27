@@ -1,9 +1,9 @@
 services:
-  yapa:
-    container_name: yapa
+  yapa-backend:
+    container_name: yapa-backend
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.backend
     restart: unless-stopped
     environment:
       DATABASE_URL: /var/lib/yapa/database.sqlite
@@ -17,6 +17,28 @@ services:
       GOOGLE_CLIENT_ID: 123
       GOOGLE_CLIENT_SECRET:
     volumes:
-      - ./data/yapa:/var/lib/yapa
+      - ./data/backend:/var/lib/yapa
     expose:
       - 8080
+  yapa-frontend:
+    container_name: yapa-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    restart: unless-stopped
+    expose:
+      - 3000
+  yapa-server:
+    container_name: yapa-server
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    restart: unless-stopped
+    volumes:
+      - ./data/server:/data
+      - caddy_config:/config
+    ports:
+      - 8080:8080
+
+volumes:
+  caddy_config:

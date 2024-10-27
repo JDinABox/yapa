@@ -1,0 +1,10 @@
+#example.com:80 {
+#	redir https://www.{host}{uri}
+#}
+
+#www.example.com:80 {
+http://localhost:8080 {
+	encode gzip zstd
+	reverse_proxy /api/* http://yapa-backend:8080
+	reverse_proxy http://yapa-frontend:3000
+}
