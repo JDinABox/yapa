@@ -1,0 +1,25 @@
+# use the official Bun image
+# see all versions at https://hub.docker.com/r/oven/bun/tags
+FROM oven/bun:alpine as base
+WORKDIR /usr/src/app
+
+COPY ./frontend/package.json ./frontend/bun.lockb ./
+RUN --mount=type=cache,target=/root/.bun/install/cache bun install --frozen-lockfile
+
+COPY ./frontend .
+
+# [optional] tests & build
+ENV NODE_ENV=production
+#RUN bun run check
+#RUN bun run lint
+RUN bun run build
+
+# copy production dependencies and source code into final image
+FROM node:alpine AS release
+#COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=base /usr/src/app/build /usr/src/app/package.json /usr/src/app/
+
+WORKDIR /usr/src/app
+# run the app
+EXPOSE 3000/tcp
+ENTRYPOINT [ "node", "index.js" ]
