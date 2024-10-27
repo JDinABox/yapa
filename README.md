@@ -1,1 +1,1 @@
-# yapa
+# yapa (Yet Another Photos App)
