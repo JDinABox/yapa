@@ -1,0 +1,22 @@
+services:
+  yapa:
+    container_name: yapa
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: /var/lib/yapa/database.sqlite
+      DOMAIN: localhost
+      APPLE_CLIENT_ID: org.example
+      APPLE_TEAM_ID: ABC123WXYZ
+      APPLE_CLIENT_KEY_ID: ABC123WXYZ
+      APPLE_CLIENT_KEY: |
+        -----BEGIN PRIVATE KEY-----
+        -----END PRIVATE KEY-----
+      GOOGLE_CLIENT_ID: 123
+      GOOGLE_CLIENT_SECRET:
+    volumes:
+      - ./data/yapa:/var/lib/yapa
+    expose:
+      - 8080
