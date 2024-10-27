@@ -15,6 +15,7 @@ require (
 )
 
 require (
+	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-jose/go-jose/v4 v4.0.2 // indirect
 	github.com/golang/glog v1.2.2
 	github.com/google/uuid v1.6.0
