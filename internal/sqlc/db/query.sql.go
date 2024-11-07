@@ -103,6 +103,22 @@ func (q *Queries) GetSession(ctx context.Context, id []byte) (Session, error) {
 	return i, err
 }
 
+const getUserByID = `-- name: GetUserByID :one
+SELECT id, created, email, name FROM Users WHERE id = ? LIMIT 1
+`
+
+func (q *Queries) GetUserByID(ctx context.Context, id []byte) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByID, id)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Created,
+		&i.Email,
+		&i.Name,
+	)
+	return i, err
+}
+
 const updateSessionData = `-- name: UpdateSessionData :exec
 UPDATE Sessions SET updated = ?, expires = ?, data = ? WHERE id = ?
 `

@@ -16,14 +16,18 @@ type Config struct {
 	// Domain used for redirects
 	// Example: example.com
 	Domain string `json:"domain"`
+	// Session Cookie Name
+	// Default: sid
+	SessionCookieName string `json:"session_cookie_name"`
 }
 
 type option func(*Config) error
 
 func New(options ...option) *Config {
 	config := &Config{
-		Address:      ":8080",
-		DatabasePath: "./data.sqlite3",
+		Address:           ":8080",
+		DatabasePath:      "./data.sqlite3",
+		SessionCookieName: "sid",
 	}
 
 	for _, opt := range options {
@@ -84,6 +88,7 @@ func Defaults() option {
 		c.Address = "0.0.0.0:8080"
 		c.DatabasePath = "./data.sqlite3"
 		c.Domain = ""
+		c.SessionCookieName = "sid"
 		return nil
 	}
 }

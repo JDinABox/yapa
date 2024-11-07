@@ -1,6 +1,9 @@
 -- name: CreateUser :one
 INSERT INTO Users (id, created, email, name) VALUES (?, ?, ?, ?) RETURNING *;
 
+-- name: GetUserByID :one
+SELECT * FROM Users WHERE id = ? LIMIT 1;
+
 -- name: CreateSession :one
 INSERT INTO Sessions (id, created, updated, expires, data) VALUES (?, ?, ?, ?, ?) RETURNING *;
 
